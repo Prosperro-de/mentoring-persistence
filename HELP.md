@@ -1,5 +1,11 @@
 # Welcome to the SQL initial module
 
+Answer the question:
+- what is ACID?
+- what is DB constraint? 
+- what types of tables relationships exists?
+- difference between foreign key and primary key
+
 
 ### №1
 
@@ -12,11 +18,15 @@
 * Create tables: <br>
 
 
-Libraries - has id, name, address, customers and books.
+Libraries - id, name, address, customers and books.
 
-Books - has id, name, genre, author, customer who read the book at the time, isFree field that say if the book is available at the time, time when the book was taken
+Books - id, name, genre, author, customer who read the book at the time, isFree field that say if the book is available at the time, <br> 
+time when the book was taken, quantity of books
 
-Customers <br> - has id, firstName, lastName, email, address <br>
+Customers - id, firstName, lastName, age, email, address,  <br>
+
+
+Feel the tables with some information
 
 You need to define:
 - what types of relationships requires the database to keep the DB normalized
@@ -24,4 +34,5 @@ You need to define:
 - what constraints should we apply to the tables <br><br>
   Links:
 - PostgreSQL documentation: https://www.postgresql.org/docs/current/index.html
-- Constraints: https://www.w3schools.com/sql/sql_constraints.asp
+- Constraints: https://www.w3schools.com/sql/sql_constraints.aspn
+- 
