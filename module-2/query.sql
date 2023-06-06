@@ -1,4 +1,4 @@
-link to pastebin->
+link to pastebin-> https://pastebin.com/uSQnt7EX
 
 
 ##########################
