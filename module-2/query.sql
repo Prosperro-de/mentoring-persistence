@@ -93,3 +93,49 @@ SELECT * FROM customers WHERE id = 14 FOR UPDATE
 BEGIN;
 
 UPDATE customers SET age = 88  WHERE id = 14
+
+##########################
+UPDATE books SET customer_id=13
+
+UPDATE books SET customer_id=14 where id>6
+
+##########################
+
+SELECT books.* FROM books
+JOIN customers ON books.customer_id = customers.id WHERE customers.id = 13
+##########################
+ALTER TABLE books
+ADD column books_quantity varchar(255)
+##########################
+UPDATE books SET books_quantity=30
+##########################
+ALTER TABLE books
+ALTER COLUMN books_quantity TYPE integer USING books_quantity::integer
+##########################
+SELECT libraries.id AS library_id, SUM(books.books_quantity) AS book_count FROM libraries
+JOIN books ON libraries.id = books.library_id
+GROUP BY libraries.id
+
+
+(to cover all libs)
+SELECT libraries.id AS library_id, SUM(books.books_quantity) AS book_count FROM libraries
+LEFT JOIN books ON libraries.id = books.library_id
+GROUP BY libraries.id
+
+##########################
+UPDATE books SET price = 110 WHERE id= 10
+##########################
+SELECT customers.id, customers.first_name, customers.last_name
+FROM customers
+JOIN ( 
+	SELECT customer_id, MAX(price) as max_price
+	FROM books
+    GROUP BY customer_id
+    ) as  subquery
+ON customers.id= subquery.customer_id
+JOIN books on customers.id = books.customer_id and  books.price =  subquery.max_price
+
+
+
+
+
