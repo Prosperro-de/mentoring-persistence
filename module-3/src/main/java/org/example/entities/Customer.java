@@ -18,13 +18,13 @@ import lombok.ToString;
 public class Customer {
 
     @Id
-    private int id;
+    private Long id;
 
     private String first_name;
 
     private String last_name ;
 
-    private int age ;
+    private Integer age ;
 
     private String email ;
 

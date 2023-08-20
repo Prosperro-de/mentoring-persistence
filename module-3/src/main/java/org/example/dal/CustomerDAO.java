@@ -1,5 +1,6 @@
 package org.example.dal;
 
+import java.io.NotActiveException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.example.entities.Customer;
+import org.example.exceptions.BaseDaoException;
 
 public class CustomerDAO extends BaseDAO<Customer>{
 
@@ -23,7 +25,7 @@ public class CustomerDAO extends BaseDAO<Customer>{
 
             while (resultSet.next()) {
                 Customer customer = Customer.builder()
-                    .id(resultSet.getInt("id"))
+                    .id((long) resultSet.getObject("id"))
                     .first_name(resultSet.getString("first_name"))
                     .last_name(resultSet.getString("last_name"))
                     .age(resultSet.getInt("age"))
@@ -55,11 +57,10 @@ public class CustomerDAO extends BaseDAO<Customer>{
 
     @Override
     public void update(Customer entity) {
-
+        throw new BaseDaoException("Method not used");
     }
 
     @Override
     public void delete(Customer entity) {
-
     }
 }
