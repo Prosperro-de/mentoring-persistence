@@ -30,6 +30,17 @@ public class ReflectionUtil {
             .toList();
     }
 
+    public  <U> List<String> getEntityFieldsNames(U entity) {
+        Class<?> clazz = entity.getClass();
+        return Arrays.stream(clazz.getDeclaredFields()).map(Field::getName).toList();
+    }
+
+    public  <T> void setFieldValues(T entity, String fieldName, Object value) throws NoSuchFieldException, IllegalAccessException {
+        Class<?> clazz = entity.getClass();
+        Field field = clazz.getDeclaredField(fieldName);
+        field.setAccessible(true);
+        field.set(entity, value);
+    }
 
     public <U> List<Field> getNotNullFields(U entity) {
         Field[] fields = entity.getClass().getDeclaredFields();

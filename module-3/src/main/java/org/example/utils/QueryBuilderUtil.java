@@ -36,6 +36,14 @@ public class QueryBuilderUtil {
             .append(columnsAndValues)
             .toString();
     }
+
+    /**
+     *  entity class
+     * @return Table name,if table name is not specified
+     * it will be generated based on entity name,
+     * table name should be
+     * entity name in plural
+     */
     private <U> String detectTableName(U entity) {
         String className = reflectionUtil.getClassName(entity);
         String tableName;
@@ -58,9 +66,11 @@ public class QueryBuilderUtil {
         return tableName;
     }
 
+
     private boolean isVowel(char c) {
         return VOWELS_LETTERS.indexOf(c) != -1;
     }
+
 
     public  <U> String detectColumnsAndValues(U entity){
         List<Field> fields = reflectionUtil.getNotNUllFieldsNamesWithOutId(entity);
@@ -87,5 +97,6 @@ public class QueryBuilderUtil {
             .append(OPEN_BRACKET).append(questionMarks).append(CLOSED_BRACKET)
             .toString();
     }
+
 
 }

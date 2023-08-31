@@ -11,13 +11,14 @@ import java.util.List;
 
 import org.example.exceptions.BaseDAOInsertException;
 import org.example.utils.QueryBuilderUtil;
+import org.example.utils.ReflectionUtil;
 
 public abstract class BaseDAO<T> {
     private final QueryBuilderUtil queryBuilderUtil = new QueryBuilderUtil();
 
-
+    private final ReflectionUtil reflectionUtil = new ReflectionUtil();
     public T getEntity(T entity, String sql) {
-        List<String> fields = getEntityFieldsNames(entity);
+        List<String> fields = reflectionUtil.getEntityFieldsNames(entity);
 
         try (Connection connection = DBConnector.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -25,7 +26,7 @@ public abstract class BaseDAO<T> {
             while (resultSet.next()) {
                 for (String field : fields) {
                     Object value = resultSet.getObject(field);
-                    setFieldValues(entity, field, value);
+                    reflectionUtil.setFieldValues(entity, field, value);
                 }
             }
         } catch (SQLException e) {
@@ -39,7 +40,6 @@ public abstract class BaseDAO<T> {
     public T insertEntity(T newEntity) throws IllegalAccessException {
         String insertQuery = queryBuilderUtil.buildInsertQuery(newEntity);
         List<Field> fields = queryBuilderUtil.getNotNUllFieldsNamesWithOutId(newEntity);
-        System.out.println(insertQuery);
 
 
         try (Connection connection = DBConnector.getConnection();
@@ -59,25 +59,6 @@ public abstract class BaseDAO<T> {
         return newEntity;
     }
 
-    /**
-     *  entity class
-     * @return Table name,if table name is not specified
-     * it will be generated based on entity name,
-     * table name should be
-     * entity name in plural
-     */
-
-    private static <T> void setFieldValues(T entity, String fieldName, Object value) throws NoSuchFieldException, IllegalAccessException {
-        Class<?> clazz = entity.getClass();
-        Field field = clazz.getDeclaredField(fieldName);
-        field.setAccessible(true);
-        field.set(entity, value);
-    }
-
-    private <U> List<String> getEntityFieldsNames(U entity) {
-        Class<?> clazz = entity.getClass();
-        return Arrays.stream(clazz.getDeclaredFields()).map(Field::getName).toList();
-    }
 
     abstract List<T> findAll();
 
