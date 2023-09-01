@@ -1,6 +1,5 @@
 package org.example.dal;
 
-import java.io.NotActiveException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -62,5 +61,6 @@ public class CustomerDAO extends BaseDAO<Customer>{
 
     @Override
     public void delete(Customer entity) {
+         super.deleteEntity(entity);
     }
 }

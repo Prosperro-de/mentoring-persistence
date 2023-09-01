@@ -5,9 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
-
 
 import org.example.exceptions.BaseDAOInsertException;
 import org.example.utils.QueryBuilderUtil;
@@ -47,6 +45,7 @@ public abstract class BaseDAO<T> {
 
             for(int i = 0; i<fields.size(); i++){
                 fields.get(i).setAccessible(true);
+                // ? костиль->
                 preparedStatement.setObject(i+1,fields.get(i).get(newEntity));
             }
 
@@ -57,6 +56,22 @@ public abstract class BaseDAO<T> {
             throw new BaseDAOInsertException("Exception while INSERT operation");
         }
         return newEntity;
+    }
+
+    public boolean deleteEntity(T entity){
+        String insertQuery = queryBuilderUtil.buildDeleteQuery(entity);
+        Long entityId = reflectionUtil.getIdField(entity);
+        try (Connection connection = DBConnector.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+
+             preparedStatement.setObject(1,entityId);
+
+             preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new BaseDAOInsertException("Exception while INSERT operation");
+        }
+        return true;
     }
 
 

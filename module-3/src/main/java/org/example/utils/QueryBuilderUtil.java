@@ -10,6 +10,12 @@ public class QueryBuilderUtil {
 
     private static final String INSERT_INTO = "INSERT INTO";
 
+    private static final String DELETE = "DELETE";
+
+    private static final String FROM = "FROM";
+
+    private static final String WHERE_ID_EQUALS = "WHERE id =";
+
     private static final String VOWELS_LETTERS = "AEIOUaeiou";
 
     private static final String SPACE = " ";
@@ -48,7 +54,7 @@ public class QueryBuilderUtil {
         String className = reflectionUtil.getClassName(entity);
         String tableName;
 
-        if (reflectionUtil.isClassHasTableAnnotation(entity)) {
+        if (reflectionUtil.isClassHasNotEmptyTableAnnotation(entity)) {
             return entity.getClass().getAnnotation(Table.class).name();
 
         } else if (className.endsWith("s") || className.endsWith("sh") || className.endsWith("ch")
@@ -98,5 +104,14 @@ public class QueryBuilderUtil {
             .toString();
     }
 
+    public <E> String buildDeleteQuery(E entity){
+        String tableName = detectTableName(entity);
 
+        return new StringBuilder()
+            .append(DELETE).append(SPACE).append(FROM).append(SPACE)
+            .append(tableName).append(SPACE)
+            .append(WHERE_ID_EQUALS).append(SPACE)
+            .append(QUESTION_MARK)
+            .toString();
+    }
 }
