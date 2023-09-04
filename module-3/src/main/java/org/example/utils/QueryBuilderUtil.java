@@ -43,41 +43,6 @@ public class QueryBuilderUtil {
             .toString();
     }
 
-    /**
-     *  entity class
-     * @return Table name,if table name is not specified
-     * it will be generated based on entity name,
-     * table name should be
-     * entity name in plural
-     */
-    private <U> String detectTableName(U entity) {
-        String className = reflectionUtil.getClassName(entity);
-        String tableName;
-
-        if (reflectionUtil.isClassHasNotEmptyTableAnnotation(entity)) {
-            return entity.getClass().getAnnotation(Table.class).name();
-
-        } else if (className.endsWith("s") || className.endsWith("sh") || className.endsWith("ch")
-            || className.endsWith("x") || className.endsWith("z")) {
-            tableName = className + "es";
-
-        } else if (className.endsWith("y") && className.length() > 1 &&
-            !isVowel(className.charAt(className.length() - 2))) {
-            tableName = className.substring(0, className.length() - 1) + "ies";
-
-        } else {
-            tableName = className + "s";
-        }
-
-        return tableName;
-    }
-
-
-    private boolean isVowel(char c) {
-        return VOWELS_LETTERS.indexOf(c) != -1;
-    }
-
-
     public  <U> String detectColumnsAndValues(U entity){
         List<Field> fields = reflectionUtil.getNotNUllFieldsNamesWithOutId(entity);
 
@@ -113,5 +78,37 @@ public class QueryBuilderUtil {
             .append(WHERE_ID_EQUALS).append(SPACE)
             .append(QUESTION_MARK)
             .toString();
+    }
+
+    /**
+     *  entity class
+     * @return Table name,if table name is not specified
+     * it will be generated based on entity name,
+     * table name should be
+     * entity name in plural
+     */
+    private <U> String detectTableName(U entity) {
+        String className = reflectionUtil.getClassName(entity);
+        String tableName;
+
+        if (reflectionUtil.isClassHasNotEmptyTableAnnotation(entity)) {
+            return entity.getClass().getAnnotation(Table.class).name();
+
+        } else if (className.endsWith("s") || className.endsWith("sh") || className.endsWith("ch")
+            || className.endsWith("x") || className.endsWith("z")) {
+            tableName = className + "es";
+
+        } else if (className.endsWith("y") && className.length() > 1 &&
+            !isVowel(className.charAt(className.length() - 2))) {
+            tableName = className.substring(0, className.length() - 1) + "ies";
+
+        } else {
+            tableName = className + "s";
+        }
+
+        return tableName;
+    }
+    private boolean isVowel(char c) {
+        return VOWELS_LETTERS.indexOf(c) != -1;
     }
 }
