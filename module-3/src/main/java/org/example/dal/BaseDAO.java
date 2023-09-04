@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.example.exceptions.BaseDAOInsertException;
+import org.example.exceptions.BaseDaoException;
 import org.example.utils.QueryBuilderUtil;
 import org.example.utils.ReflectionUtil;
 
@@ -15,12 +16,17 @@ public abstract class BaseDAO<T> {
     private final QueryBuilderUtil queryBuilderUtil = new QueryBuilderUtil();
 
     private final ReflectionUtil reflectionUtil = new ReflectionUtil();
-    public T getEntity(T entity, String sql) {
+    public T getEntity(T entity) {
         List<String> fields = reflectionUtil.getEntityFieldsNames(entity);
+        String query = queryBuilderUtil.buildSelectQuery(entity);
+        Long entityId = reflectionUtil.getIdField(entity);
 
         try (Connection connection = DBConnector.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
+             PreparedStatement preparedStatement = connection.prepareStatement(query)){
+
+             preparedStatement.setObject(1,entityId);
+             ResultSet resultSet = preparedStatement.executeQuery();
+
             while (resultSet.next()) {
                 for (String field : fields) {
                     Object value = resultSet.getObject(field);
@@ -30,7 +36,8 @@ public abstract class BaseDAO<T> {
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
+            throw new BaseDaoException("Exception while SELECT operation with entity-> "+
+                entity.getClass());
         }
         return entity;
     }
@@ -61,6 +68,7 @@ public abstract class BaseDAO<T> {
     public boolean deleteEntity(T entity){
         String insertQuery = queryBuilderUtil.buildDeleteQuery(entity);
         Long entityId = reflectionUtil.getIdField(entity);
+
         try (Connection connection = DBConnector.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
 
@@ -77,7 +85,7 @@ public abstract class BaseDAO<T> {
 
     abstract List<T> findAll();
 
-    public abstract T findById(int id);
+    public abstract T findById(Long id);
 
     public abstract void save(T entity) throws IllegalAccessException;
 

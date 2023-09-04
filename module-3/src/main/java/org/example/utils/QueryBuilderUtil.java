@@ -12,6 +12,10 @@ public class QueryBuilderUtil {
 
     private static final String DELETE = "DELETE";
 
+    private static final String SELECT = "SELECT";
+
+    private static final String ASTERISK = "*";
+
     private static final String FROM = "FROM";
 
     private static final String WHERE_ID_EQUALS = "WHERE id =";
@@ -79,6 +83,22 @@ public class QueryBuilderUtil {
             .append(QUESTION_MARK)
             .toString();
     }
+
+    public <E> String buildSelectQuery(E entity){
+        String tableName = detectTableName(entity);
+
+        return new StringBuilder()
+            .append(SELECT).append(SPACE)
+            .append(ASTERISK).append(SPACE)
+            .append(FROM).append(SPACE)
+            .append(tableName).append(SPACE)
+            .append(WHERE_ID_EQUALS)
+            .append(QUESTION_MARK)
+            .toString();
+    }
+
+
+
 
     /**
      *  entity class

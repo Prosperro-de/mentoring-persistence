@@ -41,11 +41,9 @@ public class CustomerDAO extends BaseDAO<Customer>{
     }
 
     @Override
-    public Customer findById(int id) {
-        Customer customer = new Customer();
-        String query = SELECT_FROM_CUSTOMERS_BY_ID.replace("?", String.valueOf(id));
-        System.out.println(query);
-        return getEntity(customer,query);
+    public Customer findById(Long id) {
+        Customer customer = Customer.builder().id(id).build();
+        return getEntity(customer);
     }
 
 
