@@ -36,11 +36,13 @@ public class ReflectionUtil {
                 }
                 catch (IllegalAccessException e){
                     e.printStackTrace();
-                    throw new ReflectionException("Exception while getting id value");
+                    throw new ReflectionException("Exception while getting entity value");
                 }
             }
         }
-        return null;
+        throw new ReflectionException("Any - "+
+            annotationClass.getSimpleName()+
+            " annotation was found inside entity");
     }
 
     public <U> String getClassName(U entity) {
