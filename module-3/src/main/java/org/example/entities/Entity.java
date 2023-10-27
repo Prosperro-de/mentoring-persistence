@@ -1,4 +1,4 @@
 package org.example.entities;
 
-public @interface Entity {
+public interface Entity {
 }

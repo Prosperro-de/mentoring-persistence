@@ -15,9 +15,8 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 @Table
-public class Library {
+public class Library implements Entity{
     @Id
     private int id;
 

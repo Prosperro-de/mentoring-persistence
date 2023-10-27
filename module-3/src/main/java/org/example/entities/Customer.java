@@ -13,9 +13,9 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+
 @Table
-public class Customer {
+public class Customer implements Entity {
 
     @Id
     private Long id;
