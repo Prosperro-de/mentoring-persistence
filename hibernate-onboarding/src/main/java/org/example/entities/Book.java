@@ -13,6 +13,9 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,7 +33,7 @@ import lombok.ToString;
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int id;
+    private Long id;
 
     @Size(min=1, max=255, message = "name must be in range of (0;255)")
     private String name;
@@ -40,9 +43,10 @@ public class Book {
     private String author;
 
     @Column(name = "is_Free")
-    private boolean isFree;
+    private Boolean isFree;
 
     @ManyToOne
+    @Cascade(CascadeType.ALL)
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
@@ -50,12 +54,14 @@ public class Book {
     private Date takenTime;
 
     @Min(value = 1)
-    private int quantity;
+    private Integer quantity;
+
+    //TODO зробити каскад(видалялось/не видалялось) Cascade type
 
     @ManyToOne
     @JoinColumn(name = "library_id")
     private Library library;
 
     @Min(value = 1, message = "Price must have positive value")
-    private int price;
+    private Integer price;
 }

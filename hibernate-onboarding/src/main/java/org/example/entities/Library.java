@@ -11,6 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,7 +24,6 @@ import lombok.ToString;
 @Builder
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -35,8 +37,10 @@ public class Library  {
     private String address ;
 
     @OneToMany(mappedBy = "library")
+    @Cascade(CascadeType.ALL)
     private Set<Customer> customers;
 
     @OneToMany(mappedBy = "library")
+    @Cascade(CascadeType.ALL)
     private Set<Book> books;
 }

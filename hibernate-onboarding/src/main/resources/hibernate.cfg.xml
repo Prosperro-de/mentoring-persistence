@@ -17,7 +17,7 @@
         <property name="hibernate.format_sql">true</property>
 
         <!-- could be "create-drop", to recreate tables after each program start -->
-        <property name="hbm2ddl.auto">create</property>
+        <!--<property name="hbm2ddl.auto">create</property>-->
 
 
         <mapping class="org.example.entities.Library"/>
